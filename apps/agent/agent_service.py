@@ -13,8 +13,20 @@ class AgentService:
     
     def run_command(self, command):
         try:
+            # Security checks - block dangerous commands
+            command_lower = command.lower()
+            
+            # Block directory navigation and system commands
+            blocked_commands = ['cd ', 'mkdir', 'rmdir', 'rm ', 'mv ', 'cp ', 'chmod', 'chown', 
+                              'sudo', 'su ', 'exit', 'kill', 'ps ', 'ls ', 'pwd', 'whoami',
+                              'cat ', 'grep', 'find', 'which', 'export', 'source', 'bash']
+            
+            for blocked in blocked_commands:
+                if blocked in command_lower:
+                    return f"Security: Command '{blocked.strip()}' is not allowed. Only file operations are permitted."
+            
             # Simple command parsing for file operations
-            command = command.lower()
+            command = command_lower
             
             if "create" in command and "file" in command:
                 # Extract filename and content
