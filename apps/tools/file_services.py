@@ -39,3 +39,11 @@ class FileService:
             return f"File not found: {file_path}"
         full_path.unlink()
         return f"File deleted: {file_path}"
+    
+    @staticmethod
+    def update_file(file_path, content):
+        full_path = FileService._validate_path(file_path)
+        if not full_path.exists():
+            return f"File not found: {file_path}"
+        full_path.write_text(content)
+        return f"File updated: {file_path}"
